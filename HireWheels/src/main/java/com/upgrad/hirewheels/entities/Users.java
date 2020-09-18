@@ -35,9 +35,11 @@ public class Users {
     @Column(name="wallet_money",columnDefinition = "NUMBER(10,2) DEFAULT 10000.00")
     private int walletMoney;
 
-    @ManyToMany(cascade =CascadeType.REMOVE ,fetch = FetchType.EAGER)
-    @JoinTable(name="user_role",joinColumns = @JoinColumn(name="usersid"),inverseJoinColumns = @JoinColumn(name="rolesid"))
-    List<Role> roles;
+    @ManyToOne(cascade =CascadeType.REMOVE ,fetch = FetchType.EAGER)
+    @JoinColumn(name="roleid")
+    private Role role;
+
+
 
     @OneToMany(mappedBy = "user")
     List<Booking>bookings;
@@ -65,12 +67,21 @@ public class Users {
         this.id = id;
     }
 
-   public List<Role> getRoles() {
-        return roles;
+
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public String getFirstName() {

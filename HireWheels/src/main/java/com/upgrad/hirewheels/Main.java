@@ -21,15 +21,24 @@ public class Main {
         Role role = roleDAO.save(new Role("Admin"));
 
 
+
+
         // mappings
 
         Users admin = usersDAO.findById(users.getId()).get();
-        List<Role> list = new ArrayList<>();
+
 
         Role role1 = roleDAO.findById(role.getId()).get();
-        list.add(role1);
-        admin.setRoles(list);
+
+        admin.setRole(role1);
         usersDAO.save(admin);
+
+        // displaying details of user with role Admin
+
+        int admin_id =role1.getId();
+
+     
+
 
 
 

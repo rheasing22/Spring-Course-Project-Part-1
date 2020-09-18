@@ -18,7 +18,8 @@ public class Role {
     @Column(name="role_name",nullable = false,unique = true,length=50)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="user_role",joinColumns = @JoinColumn(name="roleid"),inverseJoinColumns = @JoinColumn(name="usersid"))
     List <Users> users;
 
     public Role(){}
