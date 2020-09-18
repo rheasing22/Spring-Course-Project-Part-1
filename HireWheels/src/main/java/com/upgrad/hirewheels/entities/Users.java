@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Getter
@@ -13,7 +14,7 @@ import javax.persistence.*;
 public class Users {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id",columnDefinition = "NUMBER(10)")
-    private int userId;
+    private int id;
 
     @Column(name = "first_name", nullable = false,length=50)
     private String firstName;
@@ -30,33 +31,46 @@ public class Users {
     @Column(name = "mobile_no",nullable = false,unique = true,columnDefinition = "char(10)")
     private String mobileNo;
 
-    @Column(name="role_id",nullable = false,columnDefinition = "NUMBER(10)")
-    private int roleId;
 
     @Column(name="wallet_money",columnDefinition = "NUMBER(10,2) DEFAULT 10000.00")
     private int walletMoney;
+
+    @ManyToMany(cascade =CascadeType.REMOVE ,fetch = FetchType.EAGER)
+    @JoinTable(name="user_role",joinColumns = @JoinColumn(name="usersid"),inverseJoinColumns = @JoinColumn(name="rolesid"))
+    List<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    List<Booking>bookings;
+
 
     public Users(){}
 
 
 
-    public Users(String firstName, String lastName, String password, String email, String mobileNo, int roleId, int walletMoney) {
+    public Users(String firstName, String lastName, String password, String email, String mobileNo, int walletMoney) {
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
         this.mobileNo = mobileNo;
-        this.roleId = roleId;
         this.walletMoney = walletMoney;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+   public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {
@@ -99,13 +113,6 @@ public class Users {
         this.mobileNo = mobileNo;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
 
     public int getWalletMoney() {
         return walletMoney;
@@ -115,17 +122,5 @@ public class Users {
         this.walletMoney = walletMoney;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", mobileNo='" + mobileNo + '\'' +
-                ", roleId=" + roleId +
-                ", walletMoney=" + walletMoney +
-                '}';
-    }
+
 }
